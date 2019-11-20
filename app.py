@@ -1,6 +1,10 @@
 from flask import Flask, render_template, url_for, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+import pandas as pd
+import pandas_datareader.data as web
+from pandas_datareader.data import YahooOptions
+from flask import jsonify
 
 app = Flask(__name__)
 
@@ -65,6 +69,22 @@ def update(id):
     else:
         return render_template('update.html', task=task)
 
+
+@app.route('/lista')
+def lista():
+    start = datetime(2015, 1, 1)
+    end = datetime(2015, 12, 1)
+    facebook = web.DataReader('FB', 'yahoo', start, end)
+    stocks = pd.DataFrame(facebook)
+    data = []
+    
+    for info in range(0, len(stocks)):
+        # data.append({'high': stocks['High'][info], 'low': stocks['Low'][info], 'open': stocks['Open'][info], 'close': stocks['Close'][info], 'volume': stocks['Volume'][info], 'adj_close': stocks['Adj Close'][info]})
+        data.append({'high': stocks['High'][info], 'low': stocks['Low'][info], 'open': stocks['Open'][info], 'close': stocks['Close'][info], 'volume': stocks['Volume'][info]/100, 'adj_close': stocks['Adj Close'][info]})
+    
+    print(data)
+    return jsonify(data)
+    # return render_template('data.html', data=stocks)
 
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=True)
