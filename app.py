@@ -86,5 +86,26 @@ def lista():
     return jsonify(data)
     # return render_template('data.html', data=stocks)
 
+
+@app.route('/predict')
+def predict():
+    start = datetime(2015, 1, 1)
+    end = datetime(2015, 12, 1)
+    facebook = web.DataReader('FB', 'yahoo', start, end)
+    df = pd.DataFrame(facebook)
+
+    dfreg = df.loc[:,['Adj Close','Volume']]
+    dfreg['HL_PCT'] = (df['High'] - df['Low']) / df['Close'] * 100.0
+    dfreg['PCT_change'] = (df['Close'] - df['Open']) / df['Open'] * 100.0
+
+    data = []
+
+    for i in range(0, len(dfreg)):
+        data.append({'adj_close': dfreg['Adj Close'][i], 'volume': dfreg['Volume'][i]/100, 'hl_pct': dfreg['HL_PCT'][i], 'pct_change': dfreg['PCT_change'][i]})
+    print(dfreg.head())
+    return jsonify(data)
+
+
+
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=True)
