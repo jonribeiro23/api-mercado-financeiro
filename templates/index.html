@@ -1,7 +1,6 @@
 {% extends 'template.html' %}
-
 {% block head %}
-    
+<title>API - Flask</title>
 {% endblock %}
 
 
@@ -36,5 +35,22 @@
             </div>
             <div class="col-2"></div>
         </div>
+
+        <hr>
+
+        <div class="row mt-4">
+          <div class="col-2"></div>
+          <div class="col" align='center'>
+            <h4>Nova Tarefa</h4>
+            <form action="/" method="POST">
+              <input type="text" name="content" id="content" placeholder="Tarefa">
+              <button class="btn btn-outline-dark">Cadastrar</button>
+            </form>
+          </div>
+          <div class="col-2"></div>
+        </div>
     </div>
+
+
+
 {% endblock %}

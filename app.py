@@ -22,7 +22,7 @@ class Todo(db.Model):
         return '<Task %r>' % self.id # retorna o id da tarefa
 
 
-@app.route('/')
+@app.route('/', methods=['POST', 'GET'])
 def index():
     return render_template('index.html')
 
