@@ -6,6 +6,13 @@
 
 {% block body %}
     <div class="container mt-5">
+      <div class="row">
+        <div class="col" align='center'>
+            {% if tasks|length < 1 %}
+              <h2>Não há tarefas cadastradas</h2>
+            {% else %}
+        </div>
+      </div>
         <div class="row">
             <div class="col-2"></div>
             <div class="col">
@@ -37,6 +44,7 @@
             </div>
             <div class="col-2"></div>
         </div>
+        {% endif %}
 
         <hr>
 
