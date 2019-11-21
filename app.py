@@ -97,8 +97,7 @@ def lista():
     # return render_template('data.html', data=stocks)
 
 
-@app.route('/predict')
-def predict():
+
     start = datetime(2015, 1, 1)
     end = datetime(2016, 1, 1)
     facebook = web.DataReader('FB', 'yahoo', start, end)
@@ -188,12 +187,32 @@ def adjclose():
     return ''
     
 
-@app.route('/pricing')
+@app.route('/teste', methods=['POST'])
+def teste():
+    content = request.json
+    
+    data_ini = content['data_ini'].split('-')
+    data_fin = content['data_fin'].split('-')
+
+    
+    print(type(int(data_ini[2])))
+    print(type(int(data_ini[1])))
+    print(type(int(data_ini[0])))
+    print(int(data_ini[2]), int(data_ini[1]), int(data_ini[0]))
+    return jsonify(data_ini)
+
+
+@app.route('/pricing', methods=['POST'])
 def pricing():
-    lm = LinearRegression(n_jobs=-1)
-    start = datetime(2015, 1, 1)
-    end = datetime(2019, 1, 1)
-    stock = web.DataReader('GOOG', 'yahoo', start, end)
+    content = request.json
+
+    date_ini = content['date_ini'].split('-')
+    date_fin = content['date_fin'].split('-')
+
+    start = datetime(int(date_ini[2]), int(date_ini[1]), int(date_ini[0]))
+    end = datetime(int(date_fin[2]), int(date_fin[1]), int(date_fin[0]))
+
+    stock = web.DataReader(content['symbol'], 'yahoo', start, end)
     df = pd.DataFrame(stock)
     
     # Criando novo dataframe
