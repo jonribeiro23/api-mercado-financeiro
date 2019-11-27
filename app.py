@@ -505,10 +505,10 @@ def teste_evaluate(stock, ini_date, fin_date):
     clfknn = KNeighborsRegressor(n_neighbors=2)
     clfknn.fit(X_train, y_train)
 
-    confidencereg = clfreg.score(X_test, y_test)
-    confidencepoly2 = clfpoly2.score(X_test,y_test)
-    confidencepoly3 = clfpoly3.score(X_test,y_test)
-    confidenceknn = clfknn.score(X_test, y_test)
+    confidencereg = round(clfreg.score(X_test, y_test), 3)
+    confidencepoly2 = round(clfpoly2.score(X_test,y_test), 3)
+    confidencepoly3 = round(clfpoly3.score(X_test,y_test), 3)
+    confidenceknn = round(clfknn.score(X_test, y_test), 3)
 
     # print(confidencereg)
     # print(confidencepoly2)
