@@ -276,22 +276,20 @@ def teste_evaluate(stock, ini_date, fin_date):
     plt.xlabel('Date')
     plt.ylabel('Price')
 
-    # now = datetime.now()
-    # name = str(now.year)+str(now.month)+str(now.day)+str(now.hour)+str(now.minute)+str(now.second)
+    now = datetime.now()
+    name = str(now.year)+str(now.month)+str(now.day)+str(now.hour)+str(now.minute)+str(now.second)
     # plt.savefig('./img/graph'+name+'.png', facebolor='w', edgecolor='w', orientation='portrait', format='png', transparent=False)
-    plt.savefig('./img/graph.png', facebolor='w', edgecolor='w', orientation='portrait', format='png', transparent=False)
+    plt.savefig('./img/graphic.png', facebolor='w', edgecolor='w', orientation='portrait', format='png', transparent=False)
     plt.close()
 
 
     dados = {'linear_regression': confidencereg, 'quadratic_regression_2': confidencepoly2, 'quadratic_regression_3': confidencepoly3, 'knn_regression': confidenceknn}
     return jsonify(dados)
 
-@app.route('/image')
-def image():
-    return send_file('img/graph.png', mimetype='image/png')
+@app.route('/grafico')
+def grafico():
+    return send_file('./img/graphic.png', mimetype='image/png', cache_timeout=None,)
 
-def pltClose():
-    plt.close(fig='all')
 
 
 if __name__ == '__main__':
