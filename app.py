@@ -276,9 +276,10 @@ def teste_evaluate(stock, ini_date, fin_date):
     plt.xlabel('Date')
     plt.ylabel('Price')
 
-    now = datetime.now()
-    name = str(now.year)+str(now.month)+str(now.day)+str(now.hour)+str(now.minute)+str(now.second)
-    plt.savefig('./img/graph'+name+'.png', facebolor='w', edgecolor='w', orientation='portrait', format='png', transparent=False)
+    # now = datetime.now()
+    # name = str(now.year)+str(now.month)+str(now.day)+str(now.hour)+str(now.minute)+str(now.second)
+    # plt.savefig('./img/graph'+name+'.png', facebolor='w', edgecolor='w', orientation='portrait', format='png', transparent=False)
+    plt.savefig('./img/graph.png', facebolor='w', edgecolor='w', orientation='portrait', format='png', transparent=False)
     plt.close()
 
 
