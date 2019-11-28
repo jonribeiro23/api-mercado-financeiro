@@ -14,6 +14,7 @@ from sklearn.preprocessing import PolynomialFeatures
 from sklearn.pipeline import make_pipeline
 from sklearn import preprocessing
 import matplotlib.pyplot as plt
+import os
 
 app = Flask(__name__)
 
@@ -253,15 +254,11 @@ def teste_evaluate(stock, ini_date, fin_date):
     confidencepoly3 = round(clfpoly3.score(X_test,y_test), 3)
     confidenceknn = round(clfknn.score(X_test, y_test), 3)
 
-    # print(confidencereg)
-    # print(confidencepoly2)
-    # print(confidencepoly3)
-    # print(confidenceknn)
-
-    # confidence = {'linear_regression': confidencereg, 'quadratic_regression_2': confidencepoly2, 'quadratic_regression_3': confidencepoly3, 'knn_regression': confidenceknn}
-
     forecast_set = clfreg.predict(X_lately)
     dfreg['Forecast'] = np.nan
+
+    if os.path.isfile('./img/graph.png'):
+        os.remove('./img/graph.png')
 
 
     last_date = dfreg.iloc[-1].name
@@ -275,13 +272,13 @@ def teste_evaluate(stock, ini_date, fin_date):
     
     dfreg['Adj Close'].tail(500).plot()
     dfreg['Forecast'].tail(500).plot()
-    plt.legend(loc=4)
+    plt.legend(loc=0)
     plt.xlabel('Date')
     plt.ylabel('Price')
+
     plt.savefig('./img/graph.png', facebolor='w', edgecolor='w', orientation='portrait', format='png', transparent=False)
 
-    # dados = {'grafico': './img/graph.png', 'resultados': confidence}
-    dados = {'grafico': './img/graph.png', 'linear_regression': confidencereg, 'quadratic_regression_2': confidencepoly2, 'quadratic_regression_3': confidencepoly3, 'knn_regression': confidenceknn}
+    dados = {'linear_regression': confidencereg, 'quadratic_regression_2': confidencepoly2, 'quadratic_regression_3': confidencepoly3, 'knn_regression': confidenceknn}
     
     return jsonify(dados)
 
