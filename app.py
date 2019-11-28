@@ -13,8 +13,12 @@ from sklearn.linear_model import Ridge
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.pipeline import make_pipeline
 from sklearn import preprocessing
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import os
+import os.path
+import time
 
 app = Flask(__name__)
 
@@ -257,10 +261,6 @@ def teste_evaluate(stock, ini_date, fin_date):
     forecast_set = clfreg.predict(X_lately)
     dfreg['Forecast'] = np.nan
 
-    if os.path.isfile('./img/graph.png'):
-        os.remove('./img/graph.png')
-
-
     last_date = dfreg.iloc[-1].name
     last_unix = last_date
     next_unix = last_unix + timedelta(days=1)
@@ -269,22 +269,28 @@ def teste_evaluate(stock, ini_date, fin_date):
         next_date = next_unix
         next_unix += timedelta(days=1)
         dfreg.loc[next_date] = [np.nan for _ in range(len(dfreg.columns)-1)]+[i]
-    
+
     dfreg['Adj Close'].tail(500).plot()
     dfreg['Forecast'].tail(500).plot()
     plt.legend(loc=0)
     plt.xlabel('Date')
     plt.ylabel('Price')
 
-    plt.savefig('./img/graph.png', facebolor='w', edgecolor='w', orientation='portrait', format='png', transparent=False)
+    now = datetime.now()
+    name = str(now.year)+str(now.month)+str(now.day)+str(now.hour)+str(now.minute)+str(now.second)
+    plt.savefig('./img/graph'+name+'.png', facebolor='w', edgecolor='w', orientation='portrait', format='png', transparent=False)
+    plt.close()
+
 
     dados = {'linear_regression': confidencereg, 'quadratic_regression_2': confidencepoly2, 'quadratic_regression_3': confidencepoly3, 'knn_regression': confidenceknn}
-    
     return jsonify(dados)
 
 @app.route('/image')
 def image():
     return send_file('img/graph.png', mimetype='image/png')
+
+def pltClose():
+    plt.close(fig='all')
 
 
 if __name__ == '__main__':
