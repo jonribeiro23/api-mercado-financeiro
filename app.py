@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, request, redirect
+from flask import Flask, render_template, url_for, request, redirect, send_file
 from datetime import datetime, timedelta
 import pandas as pd
 import numpy as np
@@ -284,6 +284,10 @@ def teste_evaluate(stock, ini_date, fin_date):
     dados = {'grafico': './img/graph.png', 'linear_regression': confidencereg, 'quadratic_regression_2': confidencepoly2, 'quadratic_regression_3': confidencepoly3, 'knn_regression': confidenceknn}
     
     return jsonify(dados)
+
+@app.route('/image')
+def image():
+    return send_file('img/graph.png', mimetype='image/png')
 
 
 if __name__ == '__main__':
