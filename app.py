@@ -100,10 +100,10 @@ def stockoff():
     return jsonify(data)
 
 
-@app.route('/evaluateoff/<symbol>', methods=['GET'])
-def evaluateoff(symbol):
+@app.route('/evaluateoff/<stock>/<ini_date>/<fin_date>', methods=['GET'])
+def evaluateoff(stock, ini_date, fin_date):
 
-    df = pd.read_csv('ford.csv')
+    df = pd.read_csv(stock, index_col='Date', parse_dates=True)
     
     # Criando novo dataframe
     dfreg = df.loc[:,['Adj Close','Volume']]
@@ -151,10 +151,10 @@ def evaluateoff(symbol):
     clfknn = KNeighborsRegressor(n_neighbors=2)
     clfknn.fit(X_train, y_train)
 
-    confidencereg = clfreg.score(X_test, y_test)
-    confidencepoly2 = clfpoly2.score(X_test,y_test)
-    confidencepoly3 = clfpoly3.score(X_test,y_test)
-    confidenceknn = clfknn.score(X_test, y_test)
+    confidencereg = round(clfreg.score(X_test, y_test), 3)
+    confidencepoly2 = round(clfpoly2.score(X_test,y_test), 3)
+    confidencepoly3 = round(clfpoly3.score(X_test,y_test), 3)
+    confidenceknn = round(clfknn.score(X_test, y_test), 3)
 
     print(confidencereg)
     print(confidencepoly2)
@@ -181,7 +181,8 @@ def evaluateoff(symbol):
     plt.legend(loc=4)
     plt.xlabel('Date')
     plt.ylabel('Price')
-    plt.savefig('./img/graph.png', facebolor='w', edgecolor='w', orientation='portrait', format='png', transparent=False)
+    plt.savefig('./img/graphic.png', facebolor='w', edgecolor='w', orientation='portrait', format='png', transparent=False)
+    plt.close()
 
     # dados = {'grafico': './img/graph.png', 'resultados': confidence}
     dados = {'grafico': './img/graph.png', 'linear_regression': confidencereg, 'quadratic_regression_2': confidencepoly2, 'quadratic_regression_3': confidencepoly3, 'knn_regression': confidenceknn}
